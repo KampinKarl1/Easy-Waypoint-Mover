@@ -15,7 +15,7 @@ public class BasicMover : MonoBehaviour
     const float CLOSE_DIST = 2.0f;
     const float GET_NEXT_CD = .25f;
 
-    private float cooldown = 0;
+    private float cooldown = 0; //So the agent does call GetNextWaypoint a ton of times (via Update)
 
     private void Start()
     {
@@ -29,8 +29,8 @@ public class BasicMover : MonoBehaviour
 
     void Update()
     {
-        if (CloseToCurrentWaypoint)
-            MoveToNextWaypoint();
+        if (CloseToCurrentWaypoint) //It will be close for a few frames
+            MoveToNextWaypoint(); //So this will get called more than once
 
         if (cooldown > 0)
             cooldown -= Time.deltaTime;
@@ -38,11 +38,9 @@ public class BasicMover : MonoBehaviour
 
     private void MoveToNextWaypoint()
     {
-        print("Call");
-        if (cooldown > 0)
+        if (cooldown > 0) //That's why I put in a cooldown
             return;
-
-        print("Call thru");
+            
         Vector3 pos = GetNextWaypoint();
 
         agent.SetDestination(pos);
